@@ -2,72 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Menu | Loading...</title>
-    <meta http-equiv="refresh" content="0; url=menu.pdf">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menu</title>
     <style>
-        body {
-            background-color: #1a1a1a; /* Sophisticated Dark Background */
-            color: #f4f4f4;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+        /* This makes the "container" match your menu perfectly */
+        body, html {
             margin: 0;
-            text-align: center;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #1A1A1A; /* Your exact color */
+            overflow: hidden; /* Stops the background from wiggling */
+            display: flex;
+            justify-content: center;
         }
 
-        .loader {
-            border: 4px solid #333;
-            border-top: 4px solid #d4af37; /* Elegant Gold Color */
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        h1 { font-weight: 300; letter-spacing: 2px; margin-bottom: 10px; }
-        p { color: #888; font-size: 0.9rem; }
-        
-        .manual-link {
-            margin-top: 25px;
-            color: #d4af37;
-            text-decoration: none;
-            border: 1px solid #d4af37;
-            padding: 10px 20px;
-            border-radius: 4px;
-            transition: 0.3s;
-        }
-        
-        .manual-link:hover {
-            background: #d4af37;
-            color: #1a1a1a;
+        /* This makes the PDF fill the entire screen seamlessly */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
         }
     </style>
 </head>
 <body>
 
-    <div class="loader"></div>
-    <h1>WELCOME</h1>
-    <p>Preparing your menu...</p>
-
-    <a href="menu.pdf" class="manual-link">Click here if it doesn't open</a>
-
-    <script>
-        // Fast redirect boost
-        setTimeout(function(){
-            window.location.href = "menu.pdf";
-        }, 100); 
-    </script>
+    <iframe src="menu.pdf"></iframe>
 
 </body>
 </html>
