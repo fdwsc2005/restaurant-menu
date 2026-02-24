@@ -3,27 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opening Menu...</title>
-    
+    <title>Our Menu | Loading...</title>
     <meta http-equiv="refresh" content="0; url=menu.pdf">
     
     <style>
-        body { font-family: sans-serif; text-align: center; padding-top: 50px; color: #333; }
-        .btn { 
-            display: inline-block; padding: 15px 30px; 
-            background: #007bff; color: white; 
-            text-decoration: none; border-radius: 5px; font-weight: bold;
+        body {
+            background-color: #1a1a1a; /* Sophisticated Dark Background */
+            color: #f4f4f4;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .loader {
+            border: 4px solid #333;
+            border-top: 4px solid #d4af37; /* Elegant Gold Color */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 { font-weight: 300; letter-spacing: 2px; margin-bottom: 10px; }
+        p { color: #888; font-size: 0.9rem; }
+        
+        .manual-link {
+            margin-top: 25px;
+            color: #d4af37;
+            text-decoration: none;
+            border: 1px solid #d4af37;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        
+        .manual-link:hover {
+            background: #d4af37;
+            color: #1a1a1a;
         }
     </style>
 </head>
 <body>
-    <h2>Opening Our Menu...</h2>
-    <p>If it doesn't open automatically in 2 seconds:</p>
-    
-    <a href="menu.pdf" class="btn">View Menu (PDF)</a>
+
+    <div class="loader"></div>
+    <h1>WELCOME</h1>
+    <p>Preparing your menu...</p>
+
+    <a href="menu.pdf" class="manual-link">Click here if it doesn't open</a>
 
     <script>
-        window.location.href = "menu.pdf";
+        // Fast redirect boost
+        setTimeout(function(){
+            window.location.href = "menu.pdf";
+        }, 100); 
     </script>
+
 </body>
 </html>
