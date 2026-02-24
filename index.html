@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Menu...</title>
+    
     <meta http-equiv="refresh" content="0; url=menu.pdf">
-    <title>Menu</title>
+    
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; color: #333; }
+        .btn { 
+            display: inline-block; padding: 15px 30px; 
+            background: #007bff; color: white; 
+            text-decoration: none; border-radius: 5px; font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to menu... <a href="menu.pdf">Click here if not redirected.</a></p>
+    <h2>Opening Our Menu...</h2>
+    <p>If it doesn't open automatically in 2 seconds:</p>
+    
+    <a href="menu.pdf" class="btn">View Menu (PDF)</a>
+
+    <script>
+        window.location.href = "menu.pdf";
+    </script>
 </body>
 </html>
