@@ -2,28 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="0; url='menu.pdf'" />
+    <title>Redirecting to Menu...</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            background-color: #07221A;
-            overflow: hidden;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #07221A; /* Dark green background */
+            color: white;
+            text-align: center;
         }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        a { color: #ffffff; text-decoration: underline; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <iframe src="menu.pdf"></iframe>
+    <div class="loading-spinner"></div>
+    <p>Opening Menu...</p>
+    <p>If the menu doesn't open automatically, <br> 
+       <a href="menu.pdf">click here to view PDF</a>.
+    </p>
+
+    <script>
+        // A second backup way to force the browser to open the PDF
+        window.location.href = "menu.pdf";
+    </script>
 </body>
 </html>
