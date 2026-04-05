@@ -1,49 +1,408 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url='menu.pdf'" />
-    <title>Redirecting to Menu...</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #07221A; /* Dark green background */
-            color: white;
-            text-align: center;
-        }
-        .loading-spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #ffffff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
-        a { color: #ffffff; text-decoration: underline; margin-top: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Conte di Savoia — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #18140F;
+    --ink-soft: #6B5E4E;
+    --ink-faint: #9C8E80;
+    --gold: #C9A050;
+    --cream: #FAF6EE;
+    --surface: #FFFFFF;
+    --border: rgba(0,0,0,0.09);
+    --border-light: rgba(0,0,0,0.06);
+  }
+
+  html, body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100%;
+  }
+
+  .wrap {
+    max-width: 520px;
+    margin: 0 auto;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .hdr {
+    background: var(--ink);
+    padding: 32px 24px 24px;
+    text-align: center;
+  }
+  .hdr-est {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hdr-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 2.5px;
+  }
+  .hdr-sub {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    text-transform: uppercase;
+  }
+  .hdr-rule {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+    margin: 14px auto 0;
+  }
+
+  /* ── Promo ── */
+  .promo {
+    background: var(--gold);
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* ── Nav ── */
+  .nav {
+    background: var(--ink);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid #2A2520;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nt {
+    flex-shrink: 0;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: color .18s, border-color .18s;
+    white-space: nowrap;
+  }
+  .nt.on  { color: var(--gold); border-bottom-color: var(--gold); }
+  .nt:hover:not(.on) { color: var(--cream); }
+
+  /* ── Content panels ── */
+  .content { padding-bottom: 72px; }
+  .panel { display: none; animation: fi .22s ease; }
+  .panel.on { display: block; }
+  @keyframes fi { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── Section header ── */
+  .sh {
+    padding: 26px 24px 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .st {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: .5px;
+    white-space: nowrap;
+  }
+  .sl { flex: 1; height: 1px; background: var(--border); }
+  .sp {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 0 24px 14px;
+  }
+
+  /* ── Menu item ── */
+  .item {
+    padding: 13px 24px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .item:last-child { border-bottom: none; }
+  .in {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+  .id {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    line-height: 1.45;
+  }
+  .ip {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--gold);
+    white-space: nowrap;
+    padding-top: 2px;
+    text-align: right;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Special callout ── */
+  .callout {
+    margin: 16px 24px;
+    background: var(--ink);
+    border-radius: 4px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .cp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .ct {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .cd { font-size: 11px; color: var(--ink-soft); font-weight: 300; line-height: 1.4; }
+
+  /* ── Catering card ── */
+  .ccard {
+    margin: 0 24px 14px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .cch {
+    background: var(--ink);
+    padding: 11px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .cct { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--cream); }
+  .ccn { font-size: 10px; color: var(--ink-soft); text-align: right; line-height: 1.4; }
+  .ci {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .ci:last-child { border-bottom: none; }
+  .cin { font-family: 'Cormorant Garamond', serif; font-size: 15.5px; font-weight: 500; color: var(--ink); }
+  .cid { font-size: 11px; color: var(--ink-soft); margin-top: 2px; line-height: 1.4; }
+  .cip { font-size: 12.5px; font-weight: 500; color: var(--gold); white-space: nowrap; flex-shrink: 0; line-height: 1.6; text-align: right; }
+
+  /* ── Party sub pricing note ── */
+  .note {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--ink-faint);
+    padding: 0 24px 14px;
+  }
+</style>
 </head>
 <body>
-    <div class="loading-spinner"></div>
-    <p>Opening Menu...</p>
-    <p>If the menu doesn't open automatically, <br> 
-       <a href="menu.pdf">click here to view PDF</a>.
-    </p>
+<div class="wrap">
 
-    <script>
-        // A second backup way to force the browser to open the PDF
-        window.location.href = "menu.pdf";
-    </script>
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-est">Chicago &nbsp;·&nbsp; Est. 1948</div>
+    <div class="hdr-name">Conte di Savoia</div>
+    <div class="hdr-sub">Italian Specialty Foods</div>
+    <div class="hdr-rule"></div>
+  </div>
+
+  <!-- Promo -->
+  <div class="promo">$5 off your first order &nbsp;·&nbsp; Earn rewards via our app or website</div>
+
+  <!-- Nav -->
+  <nav class="nav" id="nav">
+    <button class="nt on" data-tab="cold">Cold Subs</button>
+    <button class="nt" data-tab="hot">Hot</button>
+    <button class="nt" data-tab="soups">Soups &amp; Salads</button>
+    <button class="nt" data-tab="dessert">Dessert &amp; Coffee</button>
+    <button class="nt" data-tab="catering">Catering</button>
+  </nav>
+
+  <div class="content">
+
+    <!-- COLD SUBS -->
+    <div class="panel on" id="tab-cold">
+
+      <div class="sh"><div class="st">Rustico</div><div class="sl"></div></div>
+      <div class="sp">6" $6.50 &nbsp;·&nbsp; 8" $8 &nbsp;·&nbsp; 12" $12 &nbsp;·&nbsp; 36" $34</div>
+      <div class="item"><div><div class="in">Italian</div><div class="id">Ham, salami, capocollo &amp; provolone</div></div></div>
+      <div class="item"><div><div class="in">Ham &amp; Provolone</div><div class="id">Boiled ham</div></div></div>
+      <div class="item"><div><div class="in">Salami &amp; Provolone</div><div class="id">Genoa salami</div></div></div>
+      <div class="item"><div><div class="in">Capocollo &amp; Provolone</div><div class="id">Pork spiced like salami</div></div></div>
+      <div class="item"><div><div class="in">Pepperoni &amp; Provolone</div><div class="id">Sliced sandwich pepperoni</div></div></div>
+      <div class="item"><div><div class="in">Bologna &amp; Provolone</div><div class="id">Veal &amp; pork</div></div></div>
+      <div class="item"><div><div class="in">Cheese Sandwich</div><div class="id">Choice of provolone, swiss, american, or cheddar</div></div></div>
+      <div class="item"><div><div class="in">Canned Tuna</div><div class="id">Genova tuna in oil</div></div></div>
+
+      <div class="sh"><div class="st">Classico</div><div class="sl"></div></div>
+      <div class="sp">6" $7 &nbsp;·&nbsp; 8" $9 &nbsp;·&nbsp; 12" $13 &nbsp;·&nbsp; 36" $37</div>
+      <div class="item"><div><div class="in">Turkey &amp; Provolone</div><div class="id">Smoked turkey</div></div></div>
+      <div class="item"><div><div class="in">Turkey Pastrami &amp; Provolone</div><div class="id">Halal turkey peppered like pastrami</div></div></div>
+      <div class="item"><div><div class="in">Chicken &amp; Provolone</div><div class="id">Sliced deli chicken</div></div></div>
+      <div class="item"><div><div class="in">Mortadella &amp; Provolone</div><div class="id">Italian bologna</div></div></div>
+      <div class="item"><div><div class="in">Egg Salad Sandwich</div><div class="id">Traditional egg salad</div></div></div>
+      <div class="item"><div><div class="in">Tuna Salad Sandwich</div><div class="id">Tuna mixed with mayonnaise</div></div></div>
+      <div class="item"><div><div class="in">Chicken Salad Sandwich</div><div class="id">Chicken mixed with mayonnaise</div></div></div>
+
+      <div class="sh"><div class="st">Maestro</div><div class="sl"></div></div>
+      <div class="sp">6" $8 &nbsp;·&nbsp; 8" $10 &nbsp;·&nbsp; 12" $14 &nbsp;·&nbsp; 36" $40</div>
+      <div class="item"><div><div class="in">Prosciutto &amp; Provolone</div><div class="id">Domestic prosciutto</div></div></div>
+      <div class="item"><div><div class="in">Corned Beef &amp; Provolone</div><div class="id">Vienna corned beef</div></div></div>
+      <div class="item"><div><div class="in">Pastrami &amp; Provolone</div><div class="id">Vienna pastrami</div></div></div>
+      <div class="item"><div><div class="in">Roast Beef &amp; Provolone</div><div class="id">Fabbri roast beef</div></div></div>
+      <div class="item"><div><div class="in">Grilled Eggplant</div><div class="id">Served cold</div></div></div>
+      <div class="item"><div><div class="in">Caprese</div><div class="id">Fresh mozzarella, sun-dried tomato &amp; fresh basil</div></div></div>
+      <div class="item"><div><div class="in">Veggie</div><div class="id">Artichoke &amp; chopped pickled eggplant</div></div></div>
+      <div class="item"><div><div class="in">The Natalia</div><div class="id">Grilled eggplant, fresh mozzarella, roasted red pepper &amp; pesto</div></div></div>
+      <div class="item"><div><div class="in">The Contessa</div><div class="id">Prosciutto di parma and fresh mozzarella</div></div></div>
+      <div class="item"><div><div class="in">The Rosie</div><div class="id">Prosciutto cotto, volpi salami &amp; hot coppa</div></div></div>
+    </div>
+
+    <!-- HOT -->
+    <div class="panel" id="tab-hot">
+      <div class="sh"><div class="st">Toasted Subs</div><div class="sl"></div></div>
+      <div class="sp">6" $9 &nbsp;·&nbsp; 8" $12 &nbsp;·&nbsp; 12" $15</div>
+      <div class="item"><div><div class="in">The Frank</div><div class="id">Italian w/ fresh mozzarella, sun-dried tomato, basil &amp; balsamic vinegar</div></div></div>
+      <div class="item"><div><div class="in">Italian Beef</div><div class="id">Cheese and/or giardiniera available, extra charge</div></div></div>
+      <div class="item"><div><div class="in">Meatball Sub</div><div class="id">Cheese and/or giardiniera available, extra charge</div></div></div>
+      <div class="item"><div><div class="in">Grilled Panini</div><div class="id">All Rustico, Classico &amp; Maestro options available</div></div><div class="ip">$10</div></div>
+      <div class="callout">
+        <div class="cp">$7.99</div>
+        <div><div class="ct">6" Italian Sub Special</div><div class="cd">Includes chips (1 oz) and your choice of 12 oz soda or bottled water</div></div>
+      </div>
+    </div>
+
+    <!-- SOUPS & SALADS -->
+    <div class="panel" id="tab-soups">
+      <div class="sh"><div class="st">Soups &amp; Salads</div><div class="sl"></div></div>
+      <div class="item"><div><div class="in">Chicken Caesar</div><div class="id">Chicken, provolone, tomato, onion, parmesan</div></div><div class="ip">$10.50</div></div>
+      <div class="item"><div><div class="in">House Salad</div><div class="id">Eggplant, artichoke, salami, provolone &amp; olives</div></div><div class="ip">$10.50</div></div>
+      <div class="item"><div><div class="in">Soup of the Day</div><div class="id">Ask your server for today's selection</div></div><div class="ip">S $4.99<br>L $6.49</div></div>
+    </div>
+
+    <!-- DESSERT & COFFEE -->
+    <div class="panel" id="tab-dessert">
+      <div class="sh"><div class="st">Desserts</div><div class="sl"></div></div>
+      <div class="item"><div><div class="in">Cannoli</div><div class="id">Tube shell filled with sweet ricotta &amp; nuts</div></div><div class="ip">Mini $1.75<br>Reg $3.75</div></div>
+      <div class="item"><div><div class="in">Tiramisu</div><div class="id">Lady finger cake w/ mascarpone &amp; espresso</div></div><div class="ip">$5</div></div>
+      <div class="item"><div><div class="in">Italian Cookies</div><div class="id">Assorted selection</div></div><div class="ip">$14 / lb</div></div>
+      <div class="sh"><div class="st">Coffee</div><div class="sl"></div></div>
+      <div class="item"><div><div class="in">Cappuccino</div><div class="id">Espresso w/ foam</div></div><div class="ip">S $2.50 · L $4</div></div>
+      <div class="item"><div><div class="in">Latte</div><div class="id">Espresso w/ steamed milk</div></div><div class="ip">S $3 · L $5</div></div>
+      <div class="item"><div><div class="in">Espresso</div></div><div class="ip">Single $2<br>Double $3</div></div>
+      <div class="item"><div><div class="in">Coffee</div><div class="id">House blend</div></div><div class="ip">S $2 · L $2.60</div></div>
+    </div>
+
+    <!-- CATERING -->
+    <div class="panel" id="tab-catering">
+      <div class="sh"><div class="st">Sandwich Trays</div><div class="sl"></div></div>
+      <div class="sp">24 pieces (3") &nbsp;·&nbsp; feeds 12–14</div>
+      <div class="ccard">
+        <div class="ci"><div><div class="cin">Italian</div><div class="cid">Ham, salami, capocollo &amp; provolone</div></div><div class="cip">$70</div></div>
+        <div class="ci"><div><div class="cin">Ham &amp; Provolone</div><div class="cid">Boiled ham</div></div><div class="cip">$68</div></div>
+        <div class="ci"><div><div class="cin">Turkey &amp; Provolone</div><div class="cid">Smoked turkey</div></div><div class="cip">$72</div></div>
+        <div class="ci"><div><div class="cin">Roast Beef &amp; Provolone</div><div class="cid">Fabbri roast beef</div></div><div class="cip">$74</div></div>
+        <div class="ci"><div><div class="cin">Prosciutto &amp; Provolone</div><div class="cid">Domestic prosciutto</div></div><div class="cip">$74</div></div>
+        <div class="ci"><div><div class="cin">Veggie</div><div class="cid">Artichoke &amp; pickled eggplant</div></div><div class="cip">$72</div></div>
+        <div class="ci"><div><div class="cin">Caprese</div><div class="cid">Fresh mozzarella, sun-dried tomato &amp; fresh basil</div></div><div class="cip">$72</div></div>
+      </div>
+
+      <div class="sh"><div class="st">Party Subs</div><div class="sl"></div></div>
+      <div class="sp">3' $70 &nbsp;·&nbsp; 4' $92 &nbsp;·&nbsp; 5' $120 &nbsp;·&nbsp; 6' $135</div>
+      <div class="note">Extra-wide loaf &nbsp;·&nbsp; feeds 3–4 people per foot</div>
+      <div class="ccard">
+        <div class="ci"><div><div class="cin">Italian</div><div class="cid">Ham, salami, capocollo &amp; provolone</div></div></div>
+        <div class="ci"><div><div class="cin">Ham</div><div class="cid">Boiled ham</div></div></div>
+        <div class="ci"><div><div class="cin">Turkey</div><div class="cid">Smoked turkey</div></div></div>
+        <div class="ci"><div><div class="cin">Veggie</div><div class="cid">Artichoke &amp; pickled eggplant</div></div></div>
+        <div class="ci"><div><div class="cin">Caprese</div><div class="cid">Fresh mozzarella, sun-dried tomato &amp; fresh basil</div></div></div>
+      </div>
+
+      <div class="sh"><div class="st">Trays &amp; Hot Foods</div><div class="sl"></div></div>
+      <div class="ccard">
+        <div class="ci"><div><div class="cin">Vegetable Tray</div><div class="cid">Small feeds 12–15 · Large feeds 22–25</div></div><div class="cip">S $39 · L $55</div></div>
+        <div class="ci"><div><div class="cin">Antipasto Tray</div><div class="cid">Small feeds 12–15 · Large feeds 22–25</div></div><div class="cip">S $65 · L $80</div></div>
+        <div class="ci"><div><div class="cin">Tray of Meatballs</div><div class="cid">Feeds 8–10</div></div><div class="cip">$49.99</div></div>
+        <div class="ci"><div><div class="cin">Italian Beef w/ Au Jus</div><div class="cid">Feeds 8–10</div></div><div class="cip">$46</div></div>
+        <div class="ci"><div><div class="cin">Sausage &amp; Peppers</div><div class="cid">Feeds 8–10</div></div><div class="cip">$52</div></div>
+        <div class="ci"><div><div class="cin">Lasagna</div><div class="cid">Cheese $47.99 · Spinach $50.99 · Meat $55.99 · Feeds 8–10</div></div></div>
+        <div class="ci"><div><div class="cin">Chicken Parmesan</div><div class="cid">Feeds 4–6</div></div><div class="cip">$33.99</div></div>
+        <div class="ci"><div><div class="cin">Eggplant Parmesan</div><div class="cid">Feeds 8–10</div></div><div class="cip">$47.99</div></div>
+        <div class="ci"><div><div class="cin">House Salad Tray</div><div class="cid">Small feeds 8–10 · Large feeds 18–20</div></div><div class="cip">S $36 · L $53</div></div>
+      </div>
+
+      <div class="sh"><div class="st">Dessert Trays</div><div class="sl"></div></div>
+      <div class="ccard">
+        <div class="ci"><div><div class="cin">Italian Cookie Tray</div></div><div class="cip">$53</div></div>
+        <div class="ci"><div><div class="cin">Tiramisu Cake</div></div><div class="cip">$42</div></div>
+        <div class="ci"><div><div class="cin">Mini Pastries</div></div><div class="cip">$72</div></div>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.getElementById('nav').addEventListener('click', function(e) {
+    var btn = e.target.closest('.nt');
+    if (!btn) return;
+    document.querySelectorAll('.nt').forEach(function(b) { b.classList.remove('on'); });
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
+    btn.classList.add('on');
+    var panel = document.getElementById('tab-' + btn.dataset.tab);
+    if (panel) panel.classList.add('on');
+  });
+</script>
 </body>
 </html>
