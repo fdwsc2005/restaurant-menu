@@ -98,7 +98,6 @@
   }
   .nav::-webkit-scrollbar { display: none; }
 
-  /* Scroll hint arrow on right edge */
   .nav-hint {
     position: absolute;
     right: 0;
@@ -171,7 +170,6 @@
   }
   .sl { flex: 1; height: 1px; background: var(--border); }
 
-  /* Tier pricing — nowrap, scrollable if needed */
   .sp {
     font-size: 16px;
     letter-spacing: 1px;
@@ -185,7 +183,7 @@
   }
   .sp::-webkit-scrollbar { display: none; }
 
-  /* Menu item — uniform across ALL sections */
+  /* Menu item */
   .item {
     padding: 13px 24px;
     border-bottom: 1px solid var(--border-light);
@@ -209,10 +207,9 @@
     font-weight: 300;
     line-height: 1.45;
   }
-  /* Uniform price — same size everywhere */
   .ip {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--gold);
     white-space: nowrap;
@@ -254,6 +251,62 @@
     color: var(--ink-faint);
     padding: 0 24px 14px;
   }
+
+  /* Info tab */
+  .store-photo {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .info-block {
+    padding: 28px 24px 0;
+  }
+  .info-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 20px;
+  }
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .info-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 3px;
+  }
+  .info-value {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .info-value a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .info-value a:hover { color: var(--gold); }
 
   /* Order Now sticky bar */
   .order-bar {
@@ -309,6 +362,7 @@
       <button class="nt" data-tab="soups">Soups &amp; Salads</button>
       <button class="nt" data-tab="dessert">Dessert &amp; Coffee</button>
       <button class="nt" data-tab="catering">Catering</button>
+      <button class="nt" data-tab="info">Info</button>
     </nav>
     <div class="nav-hint" id="navHint">
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
@@ -392,7 +446,6 @@
 
     <!-- CATERING -->
     <div class="panel" id="tab-catering">
-
       <div class="sh"><div class="st">Sandwich Trays</div><div class="sl"></div></div>
       <div class="sp">24 pieces (3") &nbsp;·&nbsp; feeds 12–14</div>
       <div class="item"><div><div class="in">Italian</div><div class="id">Ham, salami, capocollo &amp; provolone</div></div><div class="ip">$70</div></div>
@@ -427,7 +480,52 @@
       <div class="item"><div><div class="in">Italian Cookie Tray</div></div><div class="ip">$53</div></div>
       <div class="item"><div><div class="in">Tiramisu Cake</div></div><div class="ip">$42</div></div>
       <div class="item"><div><div class="in">Mini Pastries</div></div><div class="ip">$72</div></div>
+      <div style="height:8px"></div>
+    </div>
 
+    <!-- INFO -->
+    <div class="panel" id="tab-info">
+      <img src="store.webp" alt="Conte di Savoia storefront on W. Taylor Street" class="store-photo">
+      <div class="info-block">
+        <div class="info-name">Conte di Savoia</div>
+
+        <div class="info-row">
+          <svg class="info-icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div>
+            <div class="info-label">Address</div>
+            <div class="info-value">
+              <a href="https://maps.apple.com/?q=1438+W+Taylor+St,+Chicago,+IL+60607" target="_blank">
+                1438 W. Taylor Street<br>Chicago, IL 60607
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <svg class="info-icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6.29 6.29l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div>
+            <div class="info-label">Phone</div>
+            <div class="info-value"><a href="tel:+13126663471">(312) 666-3471</a></div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <svg class="info-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-value"><a href="mailto:cds1438@gmail.com">cds1438@gmail.com</a></div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <svg class="info-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <div>
+            <div class="info-label">Website</div>
+            <div class="info-value"><a href="https://www.contedisavoia.com" target="_blank">contedisavoia.com</a></div>
+          </div>
+        </div>
+
+      </div>
       <div style="height:8px"></div>
     </div>
 
