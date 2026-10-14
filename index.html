@@ -18,6 +18,8 @@
     --cream: #FAF6EE;
     --cream-alt: #F3EDE3;
     --green: #5A7A4A;
+    --open: #4A8A5A;
+    --closed: #A04040;
     --surface: #FFFFFF;
     --border: rgba(0,0,0,0.09);
     --border-light: rgba(0,0,0,0.06);
@@ -72,7 +74,29 @@
     margin: 14px auto 0;
   }
 
-  /* Promo — improved visibility */
+  /* Open/Closed status */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-dot.open { background: #6DBF82; box-shadow: 0 0 6px #6DBF82; }
+  .status-dot.closed { background: #C97070; box-shadow: 0 0 6px #C97070; }
+  .status-text.open { color: #6DBF82; }
+  .status-text.closed { color: #C97070; }
+
+  /* Promo */
   .promo {
     background: var(--gold);
     padding: 13px 20px;
@@ -82,9 +106,7 @@
     letter-spacing: 1px;
     color: var(--ink);
   }
-  .promo strong {
-    font-weight: 700;
-  }
+  .promo strong { font-weight: 700; }
 
   /* Nav wrapper */
   .nav-wrap {
@@ -151,13 +173,55 @@
   .nt.on  { color: var(--gold); border-bottom-color: var(--gold); }
   .nt:hover:not(.on) { color: var(--cream); }
 
-  /* Content — extra bottom padding so Order Now never covers last item */
-  .content { padding-bottom: 120px; }
+  /* Content */
+  .content { padding-bottom: 120px; overflow: hidden; }
   .panel { display: none; animation: fi .22s ease; }
   .panel.on { display: block; }
   @keyframes fi { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 
-  /* Tier block — alternating background for visual separation */
+  /* Search bar */
+  .search-wrap {
+    padding: 16px 24px 8px;
+    position: relative;
+  }
+  .search-input {
+    width: 100%;
+    padding: 10px 16px 10px 38px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color .18s;
+  }
+  .search-input::placeholder { color: var(--ink-faint); }
+  .search-input:focus { border-color: var(--gold); }
+  .search-icon {
+    position: absolute;
+    left: 36px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    stroke: var(--ink-faint);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    pointer-events: none;
+  }
+  .search-none {
+    display: none;
+    padding: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  /* Tier blocks */
   .tier { background: var(--cream); }
   .tier.alt { background: var(--cream-alt); }
 
@@ -201,6 +265,7 @@
     gap: 14px;
   }
   .item:last-child { border-bottom: none; }
+  .item.hidden { display: none; }
   .in {
     font-family: 'Cormorant Garamond', serif;
     font-size: 17px;
@@ -264,7 +329,7 @@
     stroke-linejoin: round;
   }
 
-  /* Sub special callout */
+  /* Callout */
   .callout {
     margin: 16px 24px;
     background: var(--ink);
@@ -370,8 +435,6 @@
     color: var(--ink);
     margin-bottom: 6px;
   }
-
-  /* History blurb */
   .info-history {
     font-size: 13px;
     color: var(--ink-soft);
@@ -380,7 +443,6 @@
     margin-bottom: 20px;
     font-style: italic;
   }
-
   .info-row {
     display: flex;
     align-items: flex-start;
@@ -417,7 +479,6 @@
   .hours-day { color: var(--ink-soft); font-size: 13px; }
   .hours-time { color: var(--ink); }
 
-  /* Review button */
   .review-btn {
     display: flex;
     align-items: center;
@@ -444,7 +505,7 @@
   }
   .review-btn:hover svg { fill: var(--ink); }
 
-  /* Order Now sticky bar */
+  /* Order Now */
   .order-bar {
     position: fixed;
     bottom: 0;
@@ -484,6 +545,10 @@
     <div class="hdr-name">Conte di Savoia</div>
     <div class="hdr-sub">Italian Specialty Foods</div>
     <div class="hdr-rule"></div>
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <div class="status-text" id="statusText"></div>
+    </div>
   </div>
 
   <div class="promo"><strong>$5 off your first order</strong> &nbsp;·&nbsp; Earn rewards via our app or website</div>
@@ -502,49 +567,55 @@
     </div>
   </div>
 
-  <div class="content">
+  <div class="content" id="content">
 
     <!-- COLD SUBS -->
     <div class="panel on" id="tab-cold">
 
-      <div class="tier">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" id="searchInput" type="text" placeholder="Search sandwiches…" autocomplete="off" autocorrect="off" spellcheck="false">
+      </div>
+      <div class="search-none" id="searchNone">No items found</div>
+
+      <div class="tier" id="tier-rustico">
         <div class="sh"><div class="st">Rustico</div><div class="sl"></div></div>
         <div class="sp">6" $6.50 &nbsp;·&nbsp; 8" $8 &nbsp;·&nbsp; 12" $12 &nbsp;·&nbsp; 36" $34</div>
-        <div class="item"><div><div class="in">Italian <span class="badge">Popular</span></div><div class="id">Ham, salami, capocollo &amp; provolone</div></div></div>
-        <div class="item"><div><div class="in">Ham &amp; Provolone</div><div class="id">Boiled ham</div></div></div>
-        <div class="item"><div><div class="in">Salami &amp; Provolone</div><div class="id">Genoa salami</div></div></div>
-        <div class="item"><div><div class="in">Capocollo &amp; Provolone</div><div class="id">Pork spiced like salami</div></div></div>
-        <div class="item"><div><div class="in">Pepperoni &amp; Provolone</div><div class="id">Sliced sandwich pepperoni</div></div></div>
-        <div class="item"><div><div class="in">Bologna &amp; Provolone</div><div class="id">Veal &amp; pork</div></div></div>
-        <div class="item"><div><div class="in">Cheese Sandwich</div><div class="id">Choice of provolone, swiss, american, or cheddar</div></div></div>
-        <div class="item"><div><div class="in">Canned Tuna</div><div class="id">Genova tuna in oil</div></div></div>
+        <div class="item" data-name="italian ham salami capocollo provolone"><div><div class="in">Italian <span class="badge">Popular</span></div><div class="id">Ham, salami, capocollo &amp; provolone</div></div></div>
+        <div class="item" data-name="ham provolone boiled"><div><div class="in">Ham &amp; Provolone</div><div class="id">Boiled ham</div></div></div>
+        <div class="item" data-name="salami provolone genoa"><div><div class="in">Salami &amp; Provolone</div><div class="id">Genoa salami</div></div></div>
+        <div class="item" data-name="capocollo provolone pork spiced salami"><div><div class="in">Capocollo &amp; Provolone</div><div class="id">Pork spiced like salami</div></div></div>
+        <div class="item" data-name="pepperoni provolone sliced sandwich"><div><div class="in">Pepperoni &amp; Provolone</div><div class="id">Sliced sandwich pepperoni</div></div></div>
+        <div class="item" data-name="bologna provolone veal pork"><div><div class="in">Bologna &amp; Provolone</div><div class="id">Veal &amp; pork</div></div></div>
+        <div class="item" data-name="cheese sandwich provolone swiss american cheddar"><div><div class="in">Cheese Sandwich</div><div class="id">Choice of provolone, swiss, american, or cheddar</div></div></div>
+        <div class="item" data-name="canned tuna genova oil"><div><div class="in">Canned Tuna</div><div class="id">Genova tuna in oil</div></div></div>
       </div>
 
-      <div class="tier alt">
+      <div class="tier alt" id="tier-classico">
         <div class="sh"><div class="st">Classico</div><div class="sl"></div></div>
         <div class="sp">6" $7 &nbsp;·&nbsp; 8" $9 &nbsp;·&nbsp; 12" $13 &nbsp;·&nbsp; 36" $37</div>
-        <div class="item"><div><div class="in">Turkey &amp; Provolone</div><div class="id">Smoked turkey</div></div></div>
-        <div class="item"><div><div class="in">Turkey Pastrami &amp; Provolone</div><div class="id">Halal turkey peppered like pastrami</div></div></div>
-        <div class="item"><div><div class="in">Chicken &amp; Provolone</div><div class="id">Sliced deli chicken</div></div></div>
-        <div class="item"><div><div class="in">Mortadella &amp; Provolone</div><div class="id">Italian bologna</div></div></div>
-        <div class="item"><div><div class="in"><span>Egg Salad Sandwich</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Traditional egg salad</div></div></div>
-        <div class="item"><div><div class="in">Tuna Salad Sandwich</div><div class="id">Tuna mixed with mayonnaise</div></div></div>
-        <div class="item"><div><div class="in">Chicken Salad Sandwich</div><div class="id">Chicken mixed with mayonnaise</div></div></div>
+        <div class="item" data-name="turkey provolone smoked"><div><div class="in">Turkey &amp; Provolone</div><div class="id">Smoked turkey</div></div></div>
+        <div class="item" data-name="turkey pastrami provolone halal peppered"><div><div class="in">Turkey Pastrami &amp; Provolone</div><div class="id">Halal turkey peppered like pastrami</div></div></div>
+        <div class="item" data-name="chicken provolone deli sliced"><div><div class="in">Chicken &amp; Provolone</div><div class="id">Sliced deli chicken</div></div></div>
+        <div class="item" data-name="mortadella provolone bologna italian"><div><div class="in">Mortadella &amp; Provolone</div><div class="id">Italian bologna</div></div></div>
+        <div class="item" data-name="egg salad sandwich vegetarian"><div><div class="in"><span>Egg Salad Sandwich</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Traditional egg salad</div></div></div>
+        <div class="item" data-name="tuna salad sandwich mayonnaise"><div><div class="in">Tuna Salad Sandwich</div><div class="id">Tuna mixed with mayonnaise</div></div></div>
+        <div class="item" data-name="chicken salad sandwich mayonnaise"><div><div class="in">Chicken Salad Sandwich</div><div class="id">Chicken mixed with mayonnaise</div></div></div>
       </div>
 
-      <div class="tier">
+      <div class="tier" id="tier-maestro">
         <div class="sh"><div class="st">Maestro</div><div class="sl"></div></div>
         <div class="sp">6" $8 &nbsp;·&nbsp; 8" $10 &nbsp;·&nbsp; 12" $14 &nbsp;·&nbsp; 36" $40</div>
-        <div class="item"><div><div class="in">Prosciutto &amp; Provolone</div><div class="id">Domestic prosciutto</div></div></div>
-        <div class="item"><div><div class="in">Corned Beef &amp; Provolone</div><div class="id">Vienna corned beef</div></div></div>
-        <div class="item"><div><div class="in">Pastrami &amp; Provolone</div><div class="id">Vienna pastrami</div></div></div>
-        <div class="item"><div><div class="in">Roast Beef &amp; Provolone</div><div class="id">Fabbri roast beef</div></div></div>
-        <div class="item"><div><div class="in"><span>Grilled Eggplant</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Served cold</div></div></div>
-        <div class="item"><div><div class="in"><span>Caprese</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span> <span class="badge">Popular</span></div><div class="id">Fresh mozzarella, sun-dried tomato &amp; fresh basil</div></div></div>
-        <div class="item"><div><div class="in"><span>Veggie</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Artichoke &amp; chopped pickled eggplant</div></div></div>
-        <div class="item"><div><div class="in"><span>The Natalia</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Grilled eggplant, fresh mozzarella, roasted red pepper &amp; pesto</div></div></div>
-        <div class="item"><div><div class="in">The Contessa</div><div class="id">Prosciutto di parma and fresh mozzarella</div></div></div>
-        <div class="item"><div><div class="in">The Rosie</div><div class="id">Prosciutto cotto, volpi salami &amp; hot coppa</div></div></div>
+        <div class="item" data-name="prosciutto provolone domestic"><div><div class="in">Prosciutto &amp; Provolone</div><div class="id">Domestic prosciutto</div></div></div>
+        <div class="item" data-name="corned beef provolone vienna"><div><div class="in">Corned Beef &amp; Provolone</div><div class="id">Vienna corned beef</div></div></div>
+        <div class="item" data-name="pastrami provolone vienna"><div><div class="in">Pastrami &amp; Provolone</div><div class="id">Vienna pastrami</div></div></div>
+        <div class="item" data-name="roast beef provolone fabbri"><div><div class="in">Roast Beef &amp; Provolone</div><div class="id">Fabbri roast beef</div></div></div>
+        <div class="item" data-name="grilled eggplant vegetarian cold"><div><div class="in"><span>Grilled Eggplant</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Served cold</div></div></div>
+        <div class="item" data-name="caprese mozzarella sun-dried tomato basil vegetarian"><div><div class="in"><span>Caprese</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span> <span class="badge">Popular</span></div><div class="id">Fresh mozzarella, sun-dried tomato &amp; fresh basil</div></div></div>
+        <div class="item" data-name="veggie artichoke eggplant vegetarian"><div><div class="in"><span>Veggie</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Artichoke &amp; chopped pickled eggplant</div></div></div>
+        <div class="item" data-name="natalia grilled eggplant mozzarella red pepper pesto vegetarian"><div><div class="in"><span>The Natalia</span><span class="veg"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg></span></div><div class="id">Grilled eggplant, fresh mozzarella, roasted red pepper &amp; pesto</div></div></div>
+        <div class="item" data-name="contessa prosciutto parma mozzarella"><div><div class="in">The Contessa</div><div class="id">Prosciutto di parma and fresh mozzarella</div></div></div>
+        <div class="item" data-name="rosie prosciutto cotto salami coppa hot"><div><div class="in">The Rosie</div><div class="id">Prosciutto cotto, volpi salami &amp; hot coppa</div></div></div>
       </div>
 
       <div class="veg-legend"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 0 18A9 9 0 0 1 12 2z"/><path d="M12 2c0 0-4 4-4 10s4 10 4 10"/><path d="M2 12h20"/></svg> Vegetarian</div>
@@ -712,21 +783,111 @@
 </div>
 
 <script>
+  // ── Store hours (Chicago time) ──
+  // Mon=1 Sat=6: 9am-6pm  Sun=0: 9am-4pm
+  (function() {
+    var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+    var day = now.getDay();
+    var hour = now.getHours();
+    var min = now.getMinutes();
+    var time = hour + min / 60;
+    var open = false;
+    var closeTime = '';
+    if (day >= 1 && day <= 6) {
+      open = time >= 9 && time < 18;
+      closeTime = 'Closes at 6pm';
+    } else {
+      open = time >= 9 && time < 16;
+      closeTime = 'Closes at 4pm';
+    }
+    var dot = document.getElementById('statusDot');
+    var txt = document.getElementById('statusText');
+    dot.className = 'status-dot ' + (open ? 'open' : 'closed');
+    txt.className = 'status-text ' + (open ? 'open' : 'closed');
+    txt.textContent = open ? closeTime : 'Closed · Opens 9am';
+  })();
+
+  // ── Tab switching with scroll-to-top ──
+  var tabs = Array.from(document.querySelectorAll('.nt'));
+  var panels = Array.from(document.querySelectorAll('.panel'));
+
+  function switchTab(key) {
+    tabs.forEach(function(b) { b.classList.remove('on'); });
+    panels.forEach(function(p) { p.classList.remove('on'); });
+    var btn = document.querySelector('.nt[data-tab="' + key + '"]');
+    var panel = document.getElementById('tab-' + key);
+    if (btn) btn.classList.add('on');
+    if (panel) panel.classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // clear search when leaving cold subs
+    if (key !== 'cold') {
+      document.getElementById('searchInput').value = '';
+      filterItems('');
+    }
+  }
+
   document.getElementById('nav').addEventListener('click', function(e) {
     var btn = e.target.closest('.nt');
     if (!btn) return;
-    document.querySelectorAll('.nt').forEach(function(b) { b.classList.remove('on'); });
-    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('on'); });
-    btn.classList.add('on');
-    var panel = document.getElementById('tab-' + btn.dataset.tab);
-    if (panel) panel.classList.add('on');
+    switchTab(btn.dataset.tab);
   });
 
+  // ── Swipe gestures ──
+  var tabOrder = ['cold','hot','soups','dessert','catering','info'];
+  var touchStartX = 0;
+  var touchStartY = 0;
+
+  document.getElementById('content').addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.getElementById('content').addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) < 50 || Math.abs(dy) > Math.abs(dx) * 0.8) return;
+    var activeBtn = document.querySelector('.nt.on');
+    if (!activeBtn) return;
+    var cur = tabOrder.indexOf(activeBtn.dataset.tab);
+    if (dx < 0 && cur < tabOrder.length - 1) switchTab(tabOrder[cur + 1]);
+    if (dx > 0 && cur > 0) switchTab(tabOrder[cur - 1]);
+  }, { passive: true });
+
+  // ── Search / filter (Cold Subs only) ──
+  function filterItems(query) {
+    var q = query.toLowerCase().trim();
+    var items = document.querySelectorAll('#tab-cold .item');
+    var tiers = ['tier-rustico','tier-classico','tier-maestro'];
+    var anyVisible = false;
+
+    items.forEach(function(item) {
+      var name = (item.getAttribute('data-name') || '').toLowerCase();
+      var text = item.textContent.toLowerCase();
+      var match = !q || name.indexOf(q) > -1 || text.indexOf(q) > -1;
+      item.classList.toggle('hidden', !match);
+      if (match) anyVisible = true;
+    });
+
+    // hide tier headers if all items in that tier are hidden
+    tiers.forEach(function(id) {
+      var tier = document.getElementById(id);
+      if (!tier) return;
+      var visible = tier.querySelectorAll('.item:not(.hidden)').length > 0;
+      tier.style.display = visible ? '' : 'none';
+    });
+
+    document.getElementById('searchNone').style.display = (q && !anyVisible) ? 'block' : 'none';
+  }
+
+  document.getElementById('searchInput').addEventListener('input', function() {
+    filterItems(this.value);
+  });
+
+  // ── Nav scroll hint ──
   var nav = document.getElementById('nav');
   var hint = document.getElementById('navHint');
   nav.addEventListener('scroll', function() {
-    var atEnd = nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8;
-    hint.classList.toggle('hidden', atEnd);
+    hint.classList.toggle('hidden', nav.scrollLeft + nav.clientWidth >= nav.scrollWidth - 8);
   });
 </script>
 </body>
