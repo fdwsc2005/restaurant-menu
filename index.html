@@ -39,7 +39,6 @@
     min-height: 100vh;
   }
 
-  /* Header */
   .hdr {
     background: var(--ink);
     padding: 32px 24px 24px;
@@ -74,7 +73,6 @@
     margin: 14px auto 0;
   }
 
-  /* Open/Closed status */
   .status-bar {
     display: flex;
     align-items: center;
@@ -96,7 +94,6 @@
   .status-text.open { color: #6DBF82; }
   .status-text.closed { color: #C97070; }
 
-  /* Promo */
   .promo {
     background: var(--gold);
     padding: 13px 20px;
@@ -108,7 +105,6 @@
   }
   .promo strong { font-weight: 700; }
 
-  /* Nav wrapper */
   .nav-wrap {
     position: sticky;
     top: 0;
@@ -173,13 +169,11 @@
   .nt.on  { color: var(--gold); border-bottom-color: var(--gold); }
   .nt:hover:not(.on) { color: var(--cream); }
 
-  /* Content */
   .content { padding-bottom: 120px; overflow: hidden; }
   .panel { display: none; animation: fi .22s ease; }
   .panel.on { display: block; }
   @keyframes fi { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
 
-  /* Search bar */
   .search-wrap {
     padding: 16px 24px 8px;
     position: relative;
@@ -189,7 +183,6 @@
     padding: 10px 16px 10px 38px;
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
-    font-weight: 400;
     color: var(--ink);
     background: var(--surface);
     border: 1px solid var(--border);
@@ -221,11 +214,9 @@
     font-style: italic;
   }
 
-  /* Tier blocks */
   .tier { background: var(--cream); }
   .tier.alt { background: var(--cream-alt); }
 
-  /* Section header */
   .sh {
     padding: 26px 24px 10px;
     display: flex;
@@ -255,7 +246,6 @@
   }
   .sp::-webkit-scrollbar { display: none; }
 
-  /* Menu item */
   .item {
     padding: 13px 24px;
     border-bottom: 1px solid var(--border-light);
@@ -296,7 +286,6 @@
     line-height: 1.6;
   }
 
-  /* Popular badge */
   .badge {
     display: inline-block;
     font-family: 'DM Sans', sans-serif;
@@ -313,7 +302,6 @@
     line-height: 1.5;
   }
 
-  /* Vegetarian icon */
   .veg {
     display: inline-flex;
     align-items: center;
@@ -329,7 +317,6 @@
     stroke-linejoin: round;
   }
 
-  /* Callout */
   .callout {
     margin: 16px 24px;
     background: var(--ink);
@@ -362,7 +349,6 @@
     padding: 0 24px 14px;
   }
 
-  /* Veg legend */
   .veg-legend {
     display: flex;
     align-items: center;
@@ -377,7 +363,6 @@
     stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   }
 
-  /* Catering inquiry */
   .inquiry {
     margin: 8px 24px 24px;
     border: 1px solid var(--border);
@@ -419,7 +404,6 @@
     flex-shrink: 0;
   }
 
-  /* Info tab */
   .store-photo {
     width: 100%;
     height: 220px;
@@ -505,7 +489,6 @@
   }
   .review-btn:hover svg { fill: var(--ink); }
 
-  /* Order Now */
   .order-bar {
     position: fixed;
     bottom: 0;
@@ -571,7 +554,6 @@
 
     <!-- COLD SUBS -->
     <div class="panel on" id="tab-cold">
-
       <div class="search-wrap">
         <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input class="search-input" id="searchInput" type="text" placeholder="Search sandwiches…" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -766,7 +748,7 @@
           </div>
         </div>
 
-        <a href="https://search.google.com/local/writereview?placeid=ChIJt_bkiButD4gRAmGjYyMxdzs" target="_blank" class="review-btn">
+        <a href="https://www.google.com/maps/place/Conte+Di+Savoia/@41.8695576,-87.6632396,17z/data=!4m8!3m7!1s0x880e2d1b88e4f6b7:0x3b7731236338a102!8m2!3d41.8695576!4d-87.6632396!9m1!1b1!16s%2Fg%2F1tm135km?hl=en&entry=ttu" target="_blank" class="review-btn">
           <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           Leave Us a Google Review
         </a>
@@ -783,8 +765,6 @@
 </div>
 
 <script>
-  // ── Store hours (Chicago time) ──
-  // Mon=1 Sat=6: 9am-6pm  Sun=0: 9am-4pm
   (function() {
     var now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' }));
     var day = now.getDay();
@@ -807,7 +787,6 @@
     txt.textContent = open ? closeTime : 'Closed · Opens 9am';
   })();
 
-  // ── Tab switching with scroll-to-top ──
   var tabs = Array.from(document.querySelectorAll('.nt'));
   var panels = Array.from(document.querySelectorAll('.panel'));
 
@@ -819,7 +798,6 @@
     if (btn) btn.classList.add('on');
     if (panel) panel.classList.add('on');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // clear search when leaving cold subs
     if (key !== 'cold') {
       document.getElementById('searchInput').value = '';
       filterItems('');
@@ -832,7 +810,6 @@
     switchTab(btn.dataset.tab);
   });
 
-  // ── Swipe gestures ──
   var tabOrder = ['cold','hot','soups','dessert','catering','info'];
   var touchStartX = 0;
   var touchStartY = 0;
@@ -853,13 +830,11 @@
     if (dx > 0 && cur > 0) switchTab(tabOrder[cur - 1]);
   }, { passive: true });
 
-  // ── Search / filter (Cold Subs only) ──
   function filterItems(query) {
     var q = query.toLowerCase().trim();
     var items = document.querySelectorAll('#tab-cold .item');
     var tiers = ['tier-rustico','tier-classico','tier-maestro'];
     var anyVisible = false;
-
     items.forEach(function(item) {
       var name = (item.getAttribute('data-name') || '').toLowerCase();
       var text = item.textContent.toLowerCase();
@@ -867,15 +842,12 @@
       item.classList.toggle('hidden', !match);
       if (match) anyVisible = true;
     });
-
-    // hide tier headers if all items in that tier are hidden
     tiers.forEach(function(id) {
       var tier = document.getElementById(id);
       if (!tier) return;
       var visible = tier.querySelectorAll('.item:not(.hidden)').length > 0;
       tier.style.display = visible ? '' : 'none';
     });
-
     document.getElementById('searchNone').style.display = (q && !anyVisible) ? 'block' : 'none';
   }
 
@@ -883,7 +855,6 @@
     filterItems(this.value);
   });
 
-  // ── Nav scroll hint ──
   var nav = document.getElementById('nav');
   var hint = document.getElementById('navHint');
   nav.addEventListener('scroll', function() {
